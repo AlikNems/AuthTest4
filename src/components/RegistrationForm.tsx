@@ -1,100 +1,83 @@
-import "@/styles/index.css";
-
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { registerUser } from "@/api/auth"; 
 
-import {
- FormControl,
- FormField,
- FormItem,
- FormMessage,
- Form,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button"; // Убедись, что путь правильный
+import { Button } from "@/components/ui/button";
 
-const formSchema = z
- .object({
-  email: z.string().email({
-   message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(6, {
-   message: "Password must be at least 6 characters long.",
-  }),
-  copyPassword: z.string().min(6, {
-   message: "Password confirmation must be at least 6 characters long.",
-  }),
- })
- .refine((data) => data.password === data.copyPassword, {
+const formSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters long." }),
+  copyPassword: z.string().min(6, { message: "Password confirmation must be at least 6 characters long." }),
+}).refine((data) => data.password === data.copyPassword, {
   message: "Passwords don't match",
   path: ["copyPassword"],
- });
+});
 
 function RegistrationForm() {
- const form = useForm<z.infer<typeof formSchema>>({
-  resolver: zodResolver(formSchema),
-  defaultValues: {
-   email: "",
-   password: "",
-   copyPassword: "",
-  },
- });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
- const onSubmit = (data: z.infer<typeof formSchema>) => {
-  console.log("Form submitted:", data);
- };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      copyPassword: "",
+    },
+  });
 
- return (
-  <div>
-   {/* Оборачиваем форму в настоящий <form> */}
-   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-    <Form {...form}>
-     <FormField
-      control={form.control}
-      name="email"
-      render={({ field }) => (
-       <FormItem>
-        <FormControl>
-         <Input placeholder="Email" {...field} />
-        </FormControl>
-        <FormMessage />
-       </FormItem>
-      )}
-     />
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    setError("");
 
-     <FormField
-      control={form.control}
-      name="password"
-      render={({ field }) => (
-       <FormItem>
-        <FormControl>
-         <Input type="password" placeholder="Password" {...field} />
-        </FormControl>
-        <FormMessage />
-       </FormItem>
-      )}
-     />
+    try {
+      const response = await registerUser(data.email, data.password);
+      localStorage.setItem("token", response.token);
+      alert("Регистрация успешна!");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-     <FormField
-      control={form.control}
-      name="copyPassword"
-      render={({ field }) => (
-       <FormItem>
-        <FormControl>
-         <Input type="password" placeholder="Copy Password" {...field} />
-        </FormControl>
-        <FormMessage />
-       </FormItem>
-      )}
-     />
-    </Form>
+  return (
+    <div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <Form {...form}>
+          <FormField control={form.control} name="email" render={({ field }) => (
+            <FormItem>
+              <FormControl><Input placeholder="Email" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
 
-    {/* Кнопка отправки формы */}
-    <Button type="submit">Register</Button>
-   </form>
-  </div>
- );
+          <FormField control={form.control} name="password" render={({ field }) => (
+            <FormItem>
+              <FormControl><Input type="password" placeholder="Password" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+
+          <FormField control={form.control} name="copyPassword" render={({ field }) => (
+            <FormItem>
+              <FormControl><Input type="password" placeholder="Copy Password" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+        </Form>
+
+        {error && <p className="text-red-500">{error}</p>}
+        <Button type="submit" disabled={loading}>
+          {loading ? "Регистрация..." : "Register"}
+        </Button>
+      </form>
+    </div>
+  );
 }
 
 export default RegistrationForm;
