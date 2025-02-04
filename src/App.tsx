@@ -1,22 +1,35 @@
-import '@/styles/app.css'
-import LogInForm from './components/LogInForm'
-import RegistrationForm from './components/RegistrationForm'
-import Profile from './components/Profile'
-import { useAuth } from '@/context/AuthContext'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import LogInForm from "./components/LogInForm";
+import RegistrationForm from "./components/RegistrationForm";
+import Profile from "./components/Profile";
 
 function App() {
-  const { user } = useAuth();
+ const { user, token } = useAuth();
 
-  return (
-    <div className='w-screen bg-gray-700 h-[85vh] flex justify-center items-center'>
-      {user ? <Profile /> : (
-        <div className="space-y-6">
-          <RegistrationForm />
-          <LogInForm />
-        </div>
-      )}
-    </div>
-  )
+ return (
+  <div className="w-screen bg-gray-700 h-[85vh] flex justify-center items-center">
+   <Routes>
+    {!token ? (
+     <>
+      <Route path="/register" element={<RegistrationForm />} />
+      <Route path="/login" element={<LogInForm />} />
+      <Route path="*" element={<Navigate to="/register" replace />} />
+     </>
+    ) : !user ? (
+     <>
+      <Route path="/login" element={<LogInForm />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+     </>
+    ) : (
+     <>
+      <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<Navigate to="/profile" replace />} />
+     </>
+    )}
+   </Routes>
+  </div>
+ );
 }
 
-export default App
+export default App;

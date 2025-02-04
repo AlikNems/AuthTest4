@@ -1,73 +1,87 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+ createContext,
+ useContext,
+ useState,
+ useEffect,
+ ReactNode,
+} from "react";
+import { useNavigate } from "react-router-dom";
 import { getProfile, loginUser } from "@/api/auth";
 
 interface User {
-  email: string;
-  id: string;
+ email: string;
+ id: string;
 }
 
 interface AuthContextType {
-  user: User | null;
-  token: string;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+ user: User | null;
+ token: string | null;
+ login: (email: string, password: string) => Promise<void>;
+ logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-interface AuthProviderProps {
-  children: ReactNode;
+export function AuthProvider({ children }: { children: ReactNode }) {
+ const [user, setUser] = useState<User | null>(null);
+ const [token, setToken] = useState<string | null>(() =>
+  localStorage.getItem("token")
+ );
+ const navigate = useNavigate();
+
+ useEffect(() => {
+  if (token) {
+   fetchUserProfile(token);
+  }
+ }, [token]);
+
+ const fetchUserProfile = async (currentToken: string) => {
+  try {
+   const userData = await getProfile(currentToken);
+
+   setUser(userData);
+  } catch (error) {
+   console.error("❌ Error fetching profile:", error);
+   logout();
+  }
+ };
+
+ const login = async (email: string, password: string) => {
+  try {
+   const response = await loginUser(email, password);
+
+   const receivedToken = response.token;
+   if (!receivedToken) {
+    throw new Error("No token received from the server.");
+   }
+
+   localStorage.setItem("token", receivedToken);
+   setToken(receivedToken);
+
+   await fetchUserProfile(receivedToken);
+   navigate("/profile");
+  } catch (error) {
+   console.error("❌ Login error:", error);
+   logout();
+  }
+ };
+
+ const logout = () => {
+  setUser(null);
+  setToken(null);
+  localStorage.removeItem("token");
+  navigate("/login");
+ };
+
+ return (
+  <AuthContext.Provider value={{ user, token, login, logout }}>
+   {children}
+  </AuthContext.Provider>
+ );
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string>(localStorage.getItem("token") || "");
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!token) return;
-
-      try {
-        const userData = await getProfile(token);
-        setUser(userData);
-      } catch {
-        logout();
-      }
-    };
-
-    checkAuth();
-  }, [token]);
-
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await loginUser(email, password);
-      setToken(response.token);
-      localStorage.setItem("token", response.token);
-
-      const userData = await getProfile(response.token);
-      setUser(userData);
-    } catch {
-      logout();
-    }
-  };
-
-  const logout = () => {
-    setToken("");
-    setUser(null);
-    localStorage.removeItem("token");
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth должен быть использован внутри AuthProvider");
-  }
-  return context;
-};
+export function useAuth() {
+ const context = useContext(AuthContext);
+ if (!context) throw new Error("useAuth must be used within an AuthProvider");
+ return context;
+}

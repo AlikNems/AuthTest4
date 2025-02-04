@@ -1,67 +1,53 @@
-// src/api/auth.ts
 const API_URL = "https://backend-ashen-seven-22.vercel.app";
 
+const request = async (url: string, options?: RequestInit) => {
+
+ const res = await fetch(`${API_URL}${url}`, options);
+ const data = await res.json();
 
 
-export const registerUser = async (email: string, password: string) => {
-  const requestBody = { email, password };
+ if (!res.ok) {
+  console.error(
+   `🔴 Ошибка запроса (${API_URL}${url}):`,
+   data.message || "Ошибка запроса"
+  );
+  throw new Error(data.message || "Ошибка запроса");
+ }
 
-  console.log("Отправляемые данные:", requestBody); // Логируем данные перед отправкой
-
-  const res = await fetch(`${API_URL}/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody),
-  });
-
-  const responseData = await res.json();
-  console.log("Ответ сервера:", responseData); // Логируем ответ
-
-  if (!res.ok) {
-    throw new Error(responseData.message || "Ошибка регистрации");
-  }
-
-  return responseData;
+ return data;
 };
 
-
-
-
+export const registerUser = (email: string, password: string) =>
+ request("/register", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, password }),
+ });
 
 export const loginUser = async (email: string, password: string) => {
-  const res = await fetch(`${API_URL}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+ const res = await request("/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, password }),
+ });
 
-  if (!res.ok) {
-    throw new Error("Ошибка авторизации");
-  }
 
-  return res.json();
+ if (!res.token) {
+  console.error("❌ Ошибка: токен не получен!");
+  throw new Error("Не удалось получить токен.");
+ }
+
+ return { token: res.token };
 };
 
-
-
-
 export const getProfile = async (token: string) => {
-  console.log("Токен, передаваемый в getProfile:", token); // Проверяем токен
-
-  const res = await fetch(`${API_URL}/profile`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // Передаем токен в заголовке
-    },
+ try {
+  const response = await request("/profile", {
+   headers: { 'Authorization': `${token}` },
   });
-
-  const data = await res.json();
-  console.log("Ответ сервера на getProfile:", data); // Логируем ответ
-
-  if (!res.ok) {
-    throw new Error(data.message || "Ошибка получения профиля");
-  }
-
-  return data;
+  return response;
+ } catch (error) {
+  console.error("Error fetching profile:", error);
+  throw error;
+ }
 };

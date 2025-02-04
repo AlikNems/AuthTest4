@@ -1,16 +1,32 @@
-
-import '@/styles/index.css'
-import { Button } from './ui/button'
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
-  return (
-    <div className="bg-gray-500 w-screen h-[10vh] flex items-center justify-center gap-[2vw] border-b-2 border-black">
+ const { user, logout } = useAuth();
 
-      <Button variant="secondary" size="lg" >Удалить</Button>
-      <Button variant="secondary" size="lg">Удалить</Button>
+ return (
+  <div className="bg-gray-500 w-screen h-[10vh] flex items-center justify-center gap-[2vw] border-b-2 border-black">
+   {user ? (
+    <Button variant="secondary" size="lg" onClick={logout}>
+     Выход
+    </Button>
+   ) : (
+    <>
+     <Link to="/login">
+      <Button variant="secondary" size="lg">
+       Логин
+      </Button>
+     </Link>
+     <Link to="/register">
+      <Button variant="secondary" size="lg">
+       Регистрация
+      </Button>
+     </Link>
+    </>
+   )}
+  </div>
+ );
+};
 
-    </div>
-  )
-}
-
-export default Header
+export default Header;
