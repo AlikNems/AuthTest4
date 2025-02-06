@@ -43,10 +43,10 @@ function RegistrationForm() {
     try {
       await registerUser(data.email, data.password);
       await login(data.email, data.password);
-      setIsFadingOut(true); // Запускаем анимацию исчезновения
+      setIsFadingOut(true);
 
       setTimeout(() => {
-        navigate("/profile"); // Переход после завершения анимации
+        navigate("/profile");
       }, 1000);
     } catch (err: any) {
       setError(err.message);

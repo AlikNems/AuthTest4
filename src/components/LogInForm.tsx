@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { useSlideIn } from "@/hooks/cssHooks/cardHooks/useSlideIn";
-import { useNavigate } from "react-router-dom"; // Изменено
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Enter a valid email" }),
@@ -16,8 +16,8 @@ function LogInForm() {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isFadingOut, setIsFadingOut] = useState(false); // Новый стейт для эффекта исчезновения
-  const navigate = useNavigate(); // Используем навигацию вместо <Link>
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,22 +32,22 @@ function LogInForm() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
-    setError(""); // Сбрасываем ошибку перед новым логином
+    setError("");
 
     try {
-      // Пробуем выполнить логин
+
       await login(data.email, data.password);
 
-      // Логин прошел, запускаем анимацию исчезновения
+
       setIsFadingOut(true);
 
-      // Ждем окончания анимации исчезновения (800 мс)
+
       setTimeout(() => {
-        navigate("/profile"); // Переходим на страницу профиля после завершения анимации
-      }, 1000); // Длительность анимации
+        navigate("/profile");
+      }, 1000);
 
     } catch (err: any) {
-      setError(err.message); // Если ошибка при логине, показываем сообщение об ошибке
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -57,10 +57,10 @@ function LogInForm() {
 
 
   const handleSignUpClick = () => {
-    setIsFadingOut(true); // Запускаем эффект исчезновения
+    setIsFadingOut(true);
 
     setTimeout(() => {
-      navigate("/register"); // После 500 мс переходим на страницу регистрации
+      navigate("/register");
     }, 500);
   };
 
@@ -107,7 +107,7 @@ function LogInForm() {
             variant="secondary"
             size="sm"
             className="secondary-custom-button"
-            onClick={handleSignUpClick} // Обработчик нажатия
+            onClick={handleSignUpClick} 
           >
             Sign up
           </Button>

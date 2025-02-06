@@ -2,7 +2,7 @@
  position: absolute;
  top: 50%;
  left: 50%;
- transform: translate(-50%, -150%); /* Начнем с позиции за пределами экрана сверху */
+ transform: translate(-50%, -150%);
  width: 40%;
  height: 55%;
  background-color: #d1d5db;
@@ -11,17 +11,17 @@
  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
  border: 1px solid #ccc;
  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
- opacity: 0; /* Изначально скрыта */
+ opacity: 0;
  will-change: transform, opacity;
 }
 
-/* Когда добавляется класс "visible", карточка плавно заезжает */
+
 .card3.visible {
- transform: translate(-50%, -50%); /* Центрируем по экрану */
+ transform: translate(-50%, -50%);
  opacity: 1;
 }
 
-/* Анимация исчезновения (без выезда) */
+
 .card3.fade-out {
  opacity: 0;
  transform: translate(-50%, -50%) scale(0.9);

@@ -2,21 +2,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Изменено
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { user, token, logout } = useAuth();
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const [isVisible, setIsVisible] = useState(false); // Добавлено состояние для видимости
-  const navigate = useNavigate(); // Используем навигацию вместо <Link>
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
-  // Этот useEffect активирует анимацию появления после первого рендера
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(true); // Появление карточки после монтирования
-    }, 100); // Задержка для плавности анимации (можно настроить)
+      setIsVisible(true);
+    }, 100);
 
-    return () => clearTimeout(timer); // Очистка таймера
+    return () => clearTimeout(timer);
   }, []);
 
   if (!token) {
@@ -24,13 +24,13 @@ const Profile = () => {
   }
 
   const handleLogOutClick = () => {
-    setIsFadingOut(true); // Запускаем эффект исчезновения
+    setIsFadingOut(true);
 
-    // Выполняем выход сразу, а редирект — после завершения анимации
+
     setTimeout(() => {
-      logout(); // Выполняем выход
-      navigate("/login"); // Переходим на страницу логина после анимации
-    }, 800); // Убедитесь, что время совпадает с длительностью анимации
+      logout();
+      navigate("/login");
+    }, 800);
   };
 
   return (
@@ -69,4 +69,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; // 🔹 Добавлен экспорт, если его не было
+export default Profile; 

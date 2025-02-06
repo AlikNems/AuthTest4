@@ -1,6 +1,6 @@
 import { request } from "./request";
 
-// Регистрация пользователя
+
 export const registerUser = (email: string, password: string) =>
  request("/register", {
   method: "POST",
@@ -8,7 +8,7 @@ export const registerUser = (email: string, password: string) =>
   body: JSON.stringify({ email, password }),
  });
 
-// Логин пользователя
+
 export const loginUser = async (email: string, password: string) => {
  const res = await request("/login", {
   method: "POST",
@@ -24,7 +24,7 @@ export const loginUser = async (email: string, password: string) => {
  return { token: res.token };
 };
 
-// Получение профиля
+
 export const getProfile = async (token: string) => {
  return request("/profile", {
   headers: { Authorization: token },

@@ -3,12 +3,12 @@
  top: 50%;
  left: 50%;
  transform: translate(150%, -50%);
- width: 40%; /* Updated with the class w-[40%] */
- height: 63%; /* Updated with the class h-[70%] */
- background-color: #d1d5db; /* Updated with the class bg-gray-400 (this is equivalent to #d1d5db) */
- padding: 2rem; /* Updated with the class p-8 */
- border-radius: 0.5rem; /* Updated with the class rounded-lg */
- box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Updated with the class shadow-lg */
+ width: 40%;
+ height: 63%;
+ background-color: #d1d5db;
+ padding: 2rem;
+ border-radius: 0.5rem;
+ box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); 
  border: 1px solid #ccc;
  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
  opacity: 0;

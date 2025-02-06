@@ -8,12 +8,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getProfile, loginUser } from "@/api/api";
 
-// types.ts (или аналогичный файл, где ты описываешь типы)
+
 
 export interface User {
   email: string;
   id: string;
-  token?: string; // добавляем свойство token
+  token?: string; 
 }
 
 interface AuthContextType {
