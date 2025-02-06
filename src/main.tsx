@@ -5,9 +5,19 @@ import App from "./App.tsx";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import { AuthProvider } from "@/context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import '@/styles/custom-styles/buttons/custom-button.css'
+import '@/styles/custom-styles/buttons/secondary-custom-button.css'
+import '@/styles/custom-styles/cards/card1.css'
+import '@/styles/custom-styles/cards/card2.css'
+import '@/styles/custom-styles/cards/card3.css'
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
+
  <StrictMode>
+    <QueryClientProvider client={queryClient}>
   <BrowserRouter>
    <AuthProvider>
     <Header />
@@ -15,5 +25,6 @@ createRoot(document.getElementById("root")!).render(
     <Footer />
    </AuthProvider>
   </BrowserRouter>
+  </QueryClientProvider>
  </StrictMode>
 );

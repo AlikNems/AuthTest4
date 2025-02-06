@@ -23,6 +23,21 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+
+      'bem-helper/class-name-case': [
+        'error',
+        'always',
+        {
+          ignore: [
+            '^hover:.*',
+            '^focus:.*',
+            '^active:.*',
+            '^w-\\[.*\\]$', 
+            '^h-\\[.*\\]$',
+            '^bg-\\[.*\\]$',
+          ]
+        },
+      ],
     },
-  },
+  }
 )

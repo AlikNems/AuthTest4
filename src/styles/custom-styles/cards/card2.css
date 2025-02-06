@@ -1,0 +1,27 @@
+.card2 {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(150%, -50%);
+ width: 40%;
+ height: 63%;
+ background-color: #d1d5db;
+ padding: 2rem;
+ border-radius: 0.5rem;
+ box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); 
+ border: 1px solid #ccc;
+ transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+ opacity: 0;
+ will-change: transform, opacity;
+}
+
+.card2.visible {
+ transform: translate(-50%, -50%);
+ opacity: 1;
+}
+
+.card2.fade-out {
+ opacity: 0;
+ transform: translate(-50%, -50%) scale(0.9);
+ transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}

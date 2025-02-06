@@ -6,11 +6,14 @@ import {
  ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProfile, loginUser } from "@/api/auth";
+import { getProfile, loginUser } from "@/api/api";
 
-interface User {
- email: string;
- id: string;
+
+
+export interface User {
+  email: string;
+  id: string;
+  token?: string; 
 }
 
 interface AuthContextType {
