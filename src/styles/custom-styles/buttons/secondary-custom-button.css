@@ -1,0 +1,13 @@
+.secondary-custom-button {
+ margin-top: 1rem; /* mt-4 */
+ font-size: 1.125rem; /* text-lg */
+ width: 20vw; /* w-[20vw] */
+ height: 5vh; /* h-[5vh] */
+ background-color: #4B5563 !important; /* bg-gray-600 */
+ transition: background-color 0.3s, transform 0.3s; /* transition-colors + transition-transform duration-300 */
+}
+
+.secondary-custom-button:hover {
+ background-color: #6B7280 !important; /* hover:bg-gray-500 */
+ transform: scale(1.05); /* hover:scale-105 */
+}

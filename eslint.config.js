@@ -28,7 +28,14 @@ export default tseslint.config(
         'error',
         'always',
         {
-          ignore: ['^hover:.*', '^focus:.*', '^active:.*']
+          ignore: [
+            '^hover:.*',
+            '^focus:.*',
+            '^active:.*',
+            '^w-\\[.*\\]$', // Игнорируем Tailwind классы вида w-[40%]
+            '^h-\\[.*\\]$', // Игнорируем h-[200px] и подобные
+            '^bg-\\[.*\\]$', // Игнорируем bg-[rgba(0,0,0,0.5)]
+          ]
         },
       ],
     },

@@ -4,6 +4,7 @@ import LogInForm from "./components/LogInForm";
 import RegistrationForm from "./components/RegistrationForm";
 import Profile from "./components/Profile";
 
+
 function App() {
  const { user, token } = useAuth();
 

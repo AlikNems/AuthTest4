@@ -6,7 +6,9 @@ import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import { AuthProvider } from "@/context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import '@/styles/custom-styles/buttons/custom-button.css'
+import '@/styles/custom-styles/buttons/secondary-custom-button.css'
+import '@/styles/custom-styles/cards/card1.css'
 
 const queryClient = new QueryClient();
 
