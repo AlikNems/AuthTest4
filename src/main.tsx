@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import '@/styles/custom-styles/buttons/custom-button.css'
 import '@/styles/custom-styles/buttons/secondary-custom-button.css'
 import '@/styles/custom-styles/cards/card1.css'
+import '@/styles/custom-styles/cards/card2.css'
+import '@/styles/custom-styles/cards/card3.css'
 
 const queryClient = new QueryClient();
 

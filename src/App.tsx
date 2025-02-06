@@ -6,7 +6,7 @@ import Profile from "./components/Profile";
 
 
 function App() {
- const { user, token } = useAuth();
+ const {  token } = useAuth();
 
  return (
   <div className="w-screen bg-gray-700 h-[85vh] flex justify-center items-center">
@@ -17,12 +17,7 @@ function App() {
       <Route path="/login" element={<LogInForm />} />
       <Route path="*" element={<Navigate to="/register" replace />} />
      </>
-    ) : !user ? (
-     <>
-      <Route path="/login" element={<LogInForm />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
-     </>
-    ) : (
+    ): (
      <>
       <Route path="/profile" element={<Profile />} />
       <Route path="*" element={<Navigate to="/profile" replace />} />
